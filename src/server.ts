@@ -1,8 +1,9 @@
 import express, {NextFunction, Request,Response} from 'express';
 //import sequelize from 'sequelize';
-import User from './models/User';
+//import User from './models/user';
 import sequelize from './config/database'
 import cors from 'cors'; //Import cors middleware
+import routes from './routes'
 
 
 const app = express();
@@ -25,22 +26,29 @@ app.use((req: Request,res: Response, next: NextFunction)=>{
     next();
 })
 
+// Use the routes defined in routes/index.ts
+app.use('/',routes);
+
 
 //Sample route
-app.get('/',(req: Request,res:Response)=>{
-    res.send('Hello, Express!');
-});
+// app.get('/',(req: Request,res:Response)=>{
+//     res.send('Hello, Express!');
+// });
 
 // Example route using Sequelize
-app.get('/users', async (req: Request, res: Response)=>{
-    try {
-        const users = await User.findAll();
-        res.json(users);
-    } catch(err){
-        console.error('Error fetching users:', err);
-        res.status(500).json({error:'internal Server Error'});
-    }
-});
+// app.get('/users', async (req: Request, res: Response)=>{
+//     try {
+//         const users = await User.findAll();
+//         res.json(users);
+//     } catch(err){
+//         console.error('Error fetching users:', err);
+//         res.status(500).json({error:'internal Server Error'});
+//     }
+// });
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+
 
 //Start the server 
 // app.listen(PORT,()=>{
