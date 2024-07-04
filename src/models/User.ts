@@ -1,6 +1,5 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
-import Post from "./Post";
 
 interface UserAttributes {
   id: number;
@@ -9,10 +8,14 @@ interface UserAttributes {
   age?: number;
 }
 
+<<<<<<< HEAD
 interface UserCreationAttributes extends Optional<UserAttributes,'id'> {}
 
 
 class User extends Model<UserAttributes,UserCreationAttributes> implements UserAttributes {
+=======
+class User extends Model<UserAttributes> implements UserAttributes {
+>>>>>>> parent of 9935429 (Add Comment)
   public id!: number;
   public username!: string;
   public email!: string;
@@ -21,6 +24,7 @@ class User extends Model<UserAttributes,UserCreationAttributes> implements UserA
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+<<<<<<< HEAD
 
   // Association methods
   public getPosts!: () => Promise<Post[]>
@@ -32,6 +36,8 @@ class User extends Model<UserAttributes,UserCreationAttributes> implements UserA
   public addComment!: (comment: Comment, options?: any) => Promise<void>;
   public hasComment!: (comment: Comment) => Promise<boolean>;
   public countComments!: () => Promise<number>;
+=======
+>>>>>>> parent of 9935429 (Add Comment)
 }
 
 User.init(
@@ -58,8 +64,6 @@ User.init(
   },
   {
     sequelize,
-    modelName:'User',
-    tableName: 'users',
   }
 );
 

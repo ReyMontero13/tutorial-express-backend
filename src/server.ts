@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 //import sequelize from 'sequelize';
 //import User from './models/user';
+<<<<<<< HEAD
 import sequelize from "./config/database";
 import cors from "cors"; //Import cors middleware
 import routes from "./routes";
@@ -9,6 +10,12 @@ import routes from "./routes";
 import User from "./models/User";
 import Post from "./models/Post";
 import Comment from "./models/Comment";
+=======
+import sequelize from './config/database'
+import cors from 'cors'; //Import cors middleware
+import routes from './routes'
+
+>>>>>>> parent of 9935429 (Add Comment)
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +25,7 @@ app.use(express.json()); //Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
 app.use(cors()); //Enable CORS for all routes
 
+<<<<<<< HEAD
 //CORS Middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -39,6 +47,21 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // app.get('/',(req: Request , res: Response) =>{
 //     res.send('Hello, sequelize with Express!');
 // });
+=======
+//CORS Middleware 
+app.use((req: Request,res: Response, next: NextFunction)=>{
+    res.header('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if(req.method === 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods','GET, POST ,PUT, PATCH , DELETE');
+        return res.status(200).json({});
+    }
+    next();
+})
+
+// Use the routes defined in routes/index.ts
+app.use('/',routes);
+>>>>>>> parent of 9935429 (Add Comment)
 
 // Use the routes defined in routes/index.ts
 app.use("/", routes);
@@ -66,6 +89,7 @@ app.use("/", routes);
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 // Example routes
 app.post("/users", async (req, res) => {
   const { username, email } = req.body;
@@ -119,6 +143,11 @@ app.post("/users/:userId/posts", async (req: Request, res: Response) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////s
 
 //Start the server
+=======
+
+
+//Start the server 
+>>>>>>> parent of 9935429 (Add Comment)
 // app.listen(PORT,()=>{
 //     console.log(`Server is running on http://localhost:${PORT}`);
 // });
