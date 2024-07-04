@@ -1,5 +1,6 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/database";
+import Post from "./Post";
 
 interface UserAttributes {
   id: number;
@@ -7,6 +8,9 @@ interface UserAttributes {
   email: string;
   age?: number;
 }
+
+interface userCreationAttributes extends Optional<UserAttributes,'id'> {}
+
 
 class User extends Model<UserAttributes> implements UserAttributes {
   public id!: number;
@@ -17,6 +21,9 @@ class User extends Model<UserAttributes> implements UserAttributes {
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  // Association methods
+  public addPost!: (post: Post) => Promise<void>
 }
 
 User.init(
@@ -43,6 +50,8 @@ User.init(
   },
   {
     sequelize,
+    modelName:'User',
+    tableName: 'users',
   }
 );
 

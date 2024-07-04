@@ -4,6 +4,13 @@ import express, {NextFunction, Request,Response} from 'express';
 import sequelize from './config/database'
 import cors from 'cors'; //Import cors middleware
 import routes from './routes'
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+import User from './models/User';
+import Post from './models/Post';
+import Comment from './models/Comment';
+
+
 
 
 const app = express();
@@ -26,6 +33,11 @@ app.use((req: Request,res: Response, next: NextFunction)=>{
     next();
 })
 
+// Welcome routes , will soon to be separated to 
+app.get('/',(req: Request , res: Response) =>{
+    res.send('Hello, sequelize with Express!');
+});
+
 // Use the routes defined in routes/index.ts
 app.use('/',routes);
 
@@ -47,6 +59,38 @@ app.use('/',routes);
 // });
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
+
+
+
+// Example route to create a post for a user 
+app.post('/users/:userId/posts', async (req: Request, res: Response)=>{
+    const {userId} = req.params;
+    const {title, content, comments} = req.body;
+
+    try{
+        // create post associated with user
+        const user = await User.findByPk(userId);
+        if(!user){
+            return res.status(404).json({error: 'User not found'});
+        }
+
+        const post = await Post.create({ title ,content});
+        await user.addPost(post);
+
+        //Create comments associated with the post
+        if (comments && comments.length>0){
+            await Promise.all(
+                comments.map(async (commentData:{content: string}) => {
+                    const comment = await Comment.create({content: commentData.content}, {});
+                    await comment.setUser(user,{})
+                })
+            )
+        }
+    } catch (error){
+        console.error('Error creating post:', error);
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+});
 
 
 
