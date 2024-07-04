@@ -1,3 +1,4 @@
+//database.ts
 import { Sequelize } from 'sequelize';
 import createDatabase from './initDatabase';
 import dotenv from 'dotenv';
