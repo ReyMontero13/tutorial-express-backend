@@ -9,10 +9,10 @@ interface UserAttributes {
   age?: number;
 }
 
-interface userCreationAttributes extends Optional<UserAttributes,'id'> {}
+interface UserCreationAttributes extends Optional<UserAttributes,'id'> {}
 
 
-class User extends Model<UserAttributes> implements UserAttributes {
+class User extends Model<UserAttributes,UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public username!: string;
   public email!: string;
@@ -23,7 +23,15 @@ class User extends Model<UserAttributes> implements UserAttributes {
   public readonly updatedAt!: Date;
 
   // Association methods
-  public addPost!: (post: Post) => Promise<void>
+  public getPosts!: () => Promise<Post[]>
+  public addPost!: (post: Post, options?: any) => Promise<void>;
+  public haspost!: (post: Post) => Promise<boolean>
+  public countPosts!: () => Promise<number>;
+
+  public getComments!: () => Promise<Comment[]>;
+  public addComment!: (comment: Comment, options?: any) => Promise<void>;
+  public hasComment!: (comment: Comment) => Promise<boolean>;
+  public countComments!: () => Promise<number>;
 }
 
 User.init(
@@ -54,5 +62,8 @@ User.init(
     tableName: 'users',
   }
 );
+
+User.hasMany(Post, { foreignKey: 'UserId', as: 'posts' });
+
 
 export default User;

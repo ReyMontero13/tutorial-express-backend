@@ -6,8 +6,8 @@ import Post from './Post';
 interface CommentAttributes {
   id: number;
   content: string;
-  userId?: number; // Foreign key for User
-  postId?: number; // Foreign key for Post
+  UserId?: number; // Foreign key for User
+  PostId?: number; // Foreign key for Post
 }
 
 interface CommentCreationAttributes extends Optional<CommentAttributes, 'id'> {}
@@ -17,8 +17,8 @@ class Comment extends Model<CommentAttributes, CommentCreationAttributes> implem
   public content!: string;
 
   // Foreign keys
-  public userId?: number;
-  public postId?: number;
+  public UserId?: number;
+  public PostId?: number;
 
   // Timestamps
   public readonly createdAt!: Date;
@@ -27,6 +27,8 @@ class Comment extends Model<CommentAttributes, CommentCreationAttributes> implem
   // Association methods 
   public getUser!: ()=> Promise<User>
   public setUser!:(user: User, options?: any) => Promise<void>
+  public getPost!:()=>Promise<Post>
+  public setPost!:(post: Post, options?: any)=> Promise<void>
 }
 
 Comment.init(
@@ -40,11 +42,11 @@ Comment.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    userId: {
+    UserId: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    postId: {
+    PostId: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
@@ -57,9 +59,9 @@ Comment.init(
 );
 
 // Define associations
-Comment.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Comment.belongsTo(Post, { foreignKey: 'postId', as: 'post' });
-User.hasMany(Comment, { foreignKey: 'userId', as: 'comments' });
-Post.hasMany(Comment, { foreignKey: 'postId', as: 'comments' });
+Comment.belongsTo(User, { foreignKey: 'UserId', as: 'user' });
+Comment.belongsTo(Post, { foreignKey: 'PostId', as: 'post' });
+//User.hasMany(Comment, { foreignKey: 'userId', as: 'comments' });
+//Post.hasMany(Comment, { foreignKey: 'postId', as: 'comments' });
 
 export default Comment;
